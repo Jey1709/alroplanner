@@ -1,3 +1,5 @@
+import { tmpdir } from "os";
+
 class Model {
   private _actulDate: Date;
   private _selectedDate: Date;
@@ -12,31 +14,69 @@ class Model {
     let calenderdays = this._DAYSOFWEEK * rows;
     const maxdays = this.getMaxDaysOfMonth(this._selectedDate.getMonth());
     const outerdays: number = calenderdays - maxdays;
-    console.log(this.getDayOfWeek());
-    return [[12, 3]];
+    const prevMonthdays: number = this.getMaxDaysOfMonth(
+      this.checkPreviousMonth(this.selectedDate).getMonth()
+    );
+    const complimentaryDays = this.complimentaryDays(
+      new Date(
+        this._selectedDate.getFullYear(),
+        this.selectedDate.getMonth(),
+        1
+      )
+    );
+
+    const firstoutday = prevMonthdays - complimentaryDays;
+    const prevDaysamount = prevMonthdays - firstoutday;
+
+    const firstarr = Array(prevDaysamount)
+      .fill(1)
+      .map((element, index) => index + firstoutday + 1);
+
+    const secondarr = Array(maxdays)
+      .fill(1)
+      .map((element, index) => index + 1);
+    const thirdarr = Array(calenderdays - (maxdays + prevDaysamount))
+      .fill(1)
+      .map((element, index) => index + 1);
+    let resultarr = Array(...firstarr, ...secondarr, ...thirdarr);
+    const finalarr: number[][] = [];
+    let idx = 0;
+    let tmparr = [];
+    do {
+      tmparr = resultarr.slice(idx, idx + 7);
+      finalarr.push(new Array(...tmparr));
+      idx += 7;
+    } while (idx < resultarr.length);
+
+    console.log(finalarr);
+
+    return finalarr;
   }
 
-  private getDayOfWeek(): number {
-    const day_in_ms = 60 * 60 * 24 * 1000;
-    const fstjan = new Date(this._selectedDate.getFullYear(), 0, 1);
-    const erg = this._selectedDate.getMilliseconds() - fstjan.getMilliseconds();
-
-    return Math.ceil(erg / day_in_ms) + fstjan.getDay() + 1 / 7;
+  /**
+   * Returns the amount of dates before a selected date e.g. Mi=3 = 2 (Mon, Di)
+   * @param comparedate
+   * @returns
+   */
+  private complimentaryDays(comparedate: Date): number {
+    return comparedate.getDay() - 1 === -1 ? 6 : comparedate.getDay() - 1;
   }
 
   private getMaxDaysOfMonth(month?: number): number {
     let maxdays;
 
     if (typeof month !== "undefined") {
-      maxdays = new Date(this._selectedDate.getFullYear(), month, 0);
+      // console.log("here");
+      maxdays = new Date(this._selectedDate.getFullYear(), month + 1, 0);
+    } else {
+      maxdays = new Date(
+        this._selectedDate.getFullYear(),
+        this._selectedDate.getMonth() + 1,
+        0
+      );
     }
-    maxdays = new Date(
-      this._selectedDate.getFullYear(),
-      this._selectedDate.getMonth(),
-      0
-    );
 
-    return maxdays.getDay();
+    return maxdays.getDate();
   }
 
   public get actualDate() {
@@ -92,31 +132,41 @@ class Model {
     return name;
   }
 
-  public setPreviousMonth() {
-    let month = this._selectedDate.getMonth();
-    let year = this._selectedDate.getFullYear();
-
+  public checkPreviousMonth(date: Date) {
+    let month = date.getMonth();
+    let year = date.getFullYear();
     if (month - 1 < 0) {
       month = 11;
       year -= 1;
     } else {
       month -= 1;
     }
-    this._selectedDate.setMonth(month);
-    this._selectedDate.setFullYear(year);
+    // console.log(new Date(year, month, date.getDate()));
+    return new Date(year, month, date.getDate());
   }
 
-  public setNextMonth() {
-    let month = this._selectedDate.getMonth();
-    let year = this._selectedDate.getFullYear();
+  public setPreviousMonth() {
+    const prevmonth: Date = this.checkPreviousMonth(this.selectedDate);
+    this._selectedDate.setMonth(prevmonth.getMonth());
+    this._selectedDate.setFullYear(prevmonth.getFullYear());
+  }
+
+  public checkNextMonth(date: Date) {
+    let month = date.getMonth();
+    let year = date.getFullYear();
     if (month + 1 > 11) {
       month = 0;
       year += 1;
     } else {
       month += 1;
     }
-    this._selectedDate.setMonth(month);
-    this._selectedDate.setFullYear(year);
+    return new Date(year, month, date.getDate());
+  }
+
+  public setNextMonth() {
+    const nextmonth: Date = this.checkNextMonth(this.selectedDate);
+    this._selectedDate.setMonth(nextmonth.getMonth());
+    this._selectedDate.setFullYear(nextmonth.getFullYear());
   }
 }
 
