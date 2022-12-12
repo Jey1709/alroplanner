@@ -39,14 +39,6 @@ const Calender = (props: CalenderTypes) => {
     val.add("selected");
   };
 
-  const testList = () => {
-    const mylist = [
-      [1, 2, 3, 4],
-      [5, 6, 7],
-    ];
-    setDays(mylist);
-  };
-
   return (
     <React.Fragment>
       {/* div.col>div.head*7^div.col*6>div.row.*7 */}
