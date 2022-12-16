@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import Model from "../Model";
 import "./Calender.css";
 
@@ -6,10 +12,14 @@ type CalenderTypes = {
   model: Model;
 };
 
-const Calender = (props: CalenderTypes) => {
+export type RefType = {
+  update: () => void;
+};
+
+const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
   //
   const init = useRef(false);
-
+  const voidRef = useRef<void>();
   useEffect(() => {
     if (!init.current) {
       init.current = true;
@@ -21,7 +31,13 @@ const Calender = (props: CalenderTypes) => {
     });
   });
 
-  const dblclickListener = (event: MouseEvent) => {
+  useImperativeHandle(ref, () => ({
+    update: () => {
+      setDays(props.model.getActualMonthList(6));
+    },
+  }));
+
+  const dblclickListener = () => {
     console.log("dblclick");
   };
 
@@ -58,7 +74,11 @@ const Calender = (props: CalenderTypes) => {
           <div key={"col_" + index} className="col">
             {value.map((val, index) => {
               return (
-                <div key={"row_" + index} className="row">
+                <div
+                  key={"row_" + index}
+                  className="row"
+                  onDoubleClick={dblclickListener}
+                >
                   {val}
                 </div>
               );
@@ -68,6 +88,6 @@ const Calender = (props: CalenderTypes) => {
       })}
     </React.Fragment>
   );
-};
+});
 
 export default Calender;

@@ -48,7 +48,7 @@ class Model {
       idx += 7;
     } while (idx < resultarr.length);
 
-    console.log(finalarr);
+    // console.log(finalarr);
 
     return finalarr;
   }

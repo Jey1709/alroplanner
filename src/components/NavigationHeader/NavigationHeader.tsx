@@ -4,6 +4,7 @@ import Model from "../Model";
 import "./NavigationHeader.css";
 
 type NavigationTypes = {
+  updateCalenderProp(): void;
   model: Model;
 };
 
@@ -22,11 +23,13 @@ const NavigationHeader = (props: NavigationTypes) => {
   const fktLeft = () => {
     props.model.setPreviousMonth();
     setDate(computeDate());
+    props.updateCalenderProp();
   };
 
   const fktRight = () => {
     props.model.setNextMonth();
     setDate(computeDate());
+    props.updateCalenderProp();
   };
 
   return (

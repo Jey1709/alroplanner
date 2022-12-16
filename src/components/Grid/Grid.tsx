@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import Calender from "../Calender/Calender";
+import React, { createRef, useRef } from "react";
+import Calender, { RefType } from "../Calender/Calender";
 import ControlHeader from "../ControlHeader/ControlHeader";
 import DetailsList from "../DetailsList/DetailsList";
 import Model from "../Model";
@@ -11,13 +11,12 @@ type GridTypes = {
 };
 
 const Grid = (props: GridTypes) => {
-  const testModel = () => {
-    // const list = [];
-    // for (let i = 0; i < 12; i++) {
-    //   list.push(`Month: ${i + 1} + ${props.model.actualMonthList()}`);
-    // }
-    // console.log(list);
-    console.log(props.model.getActualMonthList(6));
+  const updateRef = createRef<RefType>();
+
+  const updateCalenderPropHandler = () => {
+    if (updateRef !== null && updateRef.current !== null) {
+      updateRef.current.update();
+    }
   };
 
   return (
@@ -25,10 +24,13 @@ const Grid = (props: GridTypes) => {
       <div className="header">
         {/* <button onClick={testModel}></button> */}
         <ControlHeader />
-        <NavigationHeader model={props.model} />
+        <NavigationHeader
+          model={props.model}
+          updateCalenderProp={updateCalenderPropHandler}
+        />
       </div>
       <div className="content">
-        <Calender model={props.model} />
+        <Calender model={props.model} ref={updateRef} />
       </div>
       <div className="footer">
         <DetailsList></DetailsList>
