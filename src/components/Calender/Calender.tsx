@@ -1,5 +1,6 @@
 import React, {
   forwardRef,
+  MouseEventHandler,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -16,6 +17,10 @@ export type RefType = {
   update: () => void;
 };
 
+type MouseEvent = {
+  event: MouseEventHandler<HTMLDivElement>;
+};
+
 const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
   //
   const init = useRef(false);
@@ -26,9 +31,9 @@ const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
       return;
     }
     // initmethod
-    const elements = document.querySelectorAll(".row").forEach((elem) => {
-      elem.addEventListener("click", clickhandler);
-    });
+    // const elements = document.querySelectorAll(".row").forEach((elem) => {
+    //   elem.addEventListener("click", clickhandler);
+    // });
   });
 
   useImperativeHandle(ref, () => ({
@@ -45,14 +50,21 @@ const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
     props.model.getActualMonthList(6)
   );
 
-  const clickhandler = (event: Event) => {
+  const clickhandler = (event: any) => {
     const elements = document.querySelectorAll(".row");
     elements.forEach((elem) => {
       elem.classList.remove("selected");
     });
-
     let val = (event.target as HTMLElement).classList;
-    val.add("selected");
+    if (val.contains("pre")) {
+      props.model.setPreviousMonth();
+      setDays(props.model.getActualMonthList(6));
+    } else if (val.contains("post")) {
+      props.model.setNextMonth();
+      setDays(props.model.getActualMonthList(6));
+    } else {
+      val.add("selected");
+    }
   };
 
   return (
@@ -73,13 +85,17 @@ const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
         return (
           <div key={"col_" + index} className="col">
             {value.map((val, index) => {
+              // console.log(val);
+              const [value, Date, caltype] = Object.values(val);
+              // console.log(caltype);
               return (
                 <div
                   key={"row_" + index}
-                  className="row"
+                  className={`row ${caltype}`}
                   onDoubleClick={dblclickListener}
+                  onClick={clickhandler}
                 >
-                  {val}
+                  {value}
                 </div>
               );
             })}

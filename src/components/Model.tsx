@@ -30,16 +30,48 @@ class Model {
 
     const firstarr = Array(prevDaysamount)
       .fill(1)
-      .map((element, index) => index + firstoutday + 1);
+      .map((element, index) => {
+        return {
+          value: index + firstoutday + 1,
+          date: new Date(
+            this.selectedDate.getFullYear(),
+            this.selectedDate.getMonth(),
+            index + firstoutday + 1
+          ),
+          caltype: "pre",
+        };
+      });
 
     const secondarr = Array(maxdays)
       .fill(1)
-      .map((element, index) => index + 1);
+      .map((element, index) => {
+        return {
+          value: index + 1,
+          date: new Date(
+            index + 1,
+            this.selectedDate.getMonth(),
+            this.selectedDate.getFullYear()
+          ),
+          caltype: "act",
+        };
+      });
+
     const thirdarr = Array(calenderdays - (maxdays + prevDaysamount))
       .fill(1)
-      .map((element, index) => index + 1);
+      .map((element, index) => {
+        return {
+          value: index + 1,
+          date: new Date(
+            index + 1,
+            this.selectedDate.getMonth(),
+            this.selectedDate.getFullYear()
+          ),
+          caltype: "post",
+        };
+      });
+
     let resultarr = Array(...firstarr, ...secondarr, ...thirdarr);
-    const finalarr: number[][] = [];
+    const finalarr: any = [];
     let idx = 0;
     let tmparr = [];
     do {
