@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import Grid from "./components/Grid/Grid";
-import Model from "./components/Model";
+import Model from "./components/model/Model";
 
 const model = new Model();
 

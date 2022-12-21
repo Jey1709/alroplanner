@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import Button1 from "../Buttons/Button1";
-import Model from "../Model";
+import Model from "../model/Model";
 import "./NavigationHeader.css";
 
 type NavigationTypes = {
@@ -20,13 +20,22 @@ const NavigationHeader = (props: NavigationTypes) => {
 
   const [date, setDate] = useState(computeDate());
 
+  const removeSelectProp = () => {
+    const elements = document.querySelectorAll(".row");
+    elements.forEach((elem) => {
+      elem.classList.remove("selected");
+    });
+  };
+
   const fktLeft = () => {
+    removeSelectProp();
     props.model.setPreviousMonth();
     setDate(computeDate());
     props.updateCalenderProp();
   };
 
   const fktRight = () => {
+    removeSelectProp();
     props.model.setNextMonth();
     setDate(computeDate());
     props.updateCalenderProp();

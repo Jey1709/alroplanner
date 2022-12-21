@@ -1,8 +1,9 @@
-import React, { createRef, useRef } from "react";
+import React, { createRef } from "react";
 import Calender, { RefType } from "../Calender/Calender";
 import ControlHeader from "../ControlHeader/ControlHeader";
-import DetailsList from "../DetailsList/DetailsList";
-import Model from "../Model";
+import DetailsList, { DetialListRef } from "../DetailsList/DetailsList";
+import Meeting from "../model/Meeting";
+import Model from "../model/Model";
 import NavigationHeader from "../NavigationHeader/NavigationHeader";
 import "./Grid.css";
 
@@ -11,11 +12,18 @@ type GridTypes = {
 };
 
 const Grid = (props: GridTypes) => {
-  const updateRef = createRef<RefType>();
+  const updateCalenderRef = createRef<RefType>();
+  const updateDetailsRef = createRef<DetialListRef>();
 
   const updateCalenderPropHandler = () => {
-    if (updateRef !== null && updateRef.current !== null) {
-      updateRef.current.update();
+    if (updateCalenderRef !== null && updateCalenderRef.current !== null) {
+      updateCalenderRef.current.update();
+    }
+  };
+
+  const updateDetailsListPropHandler = (list: Meeting[]) => {
+    if (updateDetailsRef !== null && updateDetailsRef.current !== null) {
+      updateDetailsRef.current.update(list);
     }
   };
 
@@ -30,10 +38,14 @@ const Grid = (props: GridTypes) => {
         />
       </div>
       <div className="content">
-        <Calender model={props.model} ref={updateRef} />
+        <Calender
+          model={props.model}
+          ref={updateCalenderRef}
+          getMeetingValues={updateDetailsListPropHandler}
+        />
       </div>
       <div className="footer">
-        <DetailsList></DetailsList>
+        <DetailsList model={props.model} ref={updateDetailsRef}></DetailsList>
       </div>
     </div>
   );

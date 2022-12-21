@@ -1,30 +1,27 @@
 import React, {
   forwardRef,
-  MouseEventHandler,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from "react";
-import Model from "../Model";
+import Meeting from "../model/Meeting";
+import Model from "../model/Model";
 import "./Calender.css";
 
 type CalenderTypes = {
   model: Model;
+  getMeetingValues: (list: Meeting[]) => void;
 };
 
 export type RefType = {
   update: () => void;
 };
 
-type MouseEvent = {
-  event: MouseEventHandler<HTMLDivElement>;
-};
-
 const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
   //
   const init = useRef(false);
-  const voidRef = useRef<void>();
+
   useEffect(() => {
     if (!init.current) {
       init.current = true;
@@ -65,6 +62,10 @@ const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
     } else {
       val.add("selected");
     }
+    const tempdate = event.target.id.split("_");
+    let retdate = new Date(tempdate[0], tempdate[1], tempdate[2]);
+    const list = props.model.getMatchingBirthdays(retdate);
+    props.getMeetingValues(list);
   };
 
   return (
@@ -86,12 +87,15 @@ const Calender = forwardRef((props: CalenderTypes, ref: React.Ref<RefType>) => {
           <div key={"col_" + index} className="col">
             {value.map((val, index) => {
               // console.log(val);
-              const [value, Date, caltype] = Object.values(val);
-              // console.log(caltype);
+              const [value, date, caltype, meetings] = Object.values(val);
+
+              let contains = meetings.length > 0 ? "contains" : "";
+
               return (
                 <div
                   key={"row_" + index}
-                  className={`row ${caltype}`}
+                  className={`row ${caltype} ${contains}`}
+                  id={date}
                   onDoubleClick={dblclickListener}
                   onClick={clickhandler}
                 >

@@ -17,7 +17,8 @@
     justify-content: center;
     align-items: center;
     border: 1px solid black;
-    background: linear-gradient(rgba(115, 239, 87, 0.574), rgba(46, 115, 40, 0.99) ) ;
+    background: black;
+    color:red;
     
 }
 
@@ -30,15 +31,27 @@
     border: 1px solid black;
     text-align: center;
     justify-content: center;
-    background: linear-gradient(to top, rgba(171, 177, 186, 0.844), rgba(55, 61, 55, 0.582) ) ;
+    color: green;
+    background: black;
 }
 
 
 
 .pre, .post{
-    background: linear-gradient(to top, rgba(244, 245, 248, 0.844), rgba(228, 243, 227, 0.582) ) ;
+    /* background-color: gray; */
+    color: grey;
+}
+
+
+
+.contains{
+    background-color: green;
+    border: 1px solid green;
+    color: lightgreen;
 }
 
 .selected{
-    background-color: rgba(213, 84, 84, 0.793);
+    background-color: grey;
+    /* border: 1px solid red; */
+    outline: 1px solid lightgray;
 }
