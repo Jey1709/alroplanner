@@ -20,10 +20,23 @@ const DetailsList = forwardRef(
         setList(details);
       },
     }));
+
     return (
       <div className="details_list">
         {list.map((item) => {
-          return <div>{"" + item.firstname + " " + item.lastname}</div>;
+          const compdate: Date = new Date(item.date);
+          const date = new Date(Date.now());
+          const diff = date.getFullYear() - compdate.getFullYear();
+          return (
+            <div key={"" + item.date}>
+              {"" +
+                item.firstname +
+                " " +
+                item.lastname +
+                " " +
+                `(${diff} Jahre)`}
+            </div>
+          );
         })}
       </div>
     );

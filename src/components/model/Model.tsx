@@ -7,9 +7,11 @@ class Model {
   private _birthdaysList: Meeting[] = [];
 
   constructor() {
-    this._actulDate = new Date();
+    this._actulDate = new Date(Date.now());
     this._selectedDate = this._actulDate;
+
     let str = JSON.stringify(bdaylist);
+    // console.log(str);
     let obj = JSON.parse(str);
     this._birthdaysList = this.convertMeetingList(
       Object.values(obj["meetinglist"])
@@ -140,7 +142,7 @@ class Model {
         item.date.getMonth() === date.getMonth() &&
         item.date.getDate() === date.getDate()
       ) {
-        console.log(date.getDate() + ":" + date.getMonth() + item.firstname);
+        // console.log(date.getDate() + ":" + date.getMonth() + item.firstname);
       }
       return (
         // item.date.getFullYear() == date.getFullYear() &&

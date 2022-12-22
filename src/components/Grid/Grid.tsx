@@ -1,19 +1,22 @@
 import React, { createRef } from "react";
-import Calender, { RefType } from "../Calender/Calender";
+import Calender, { CalenderRefType } from "../Calender/Calender";
 import ControlHeader from "../ControlHeader/ControlHeader";
 import DetailsList, { DetialListRef } from "../DetailsList/DetailsList";
 import Meeting from "../model/Meeting";
 import Model from "../model/Model";
-import NavigationHeader from "../NavigationHeader/NavigationHeader";
+import NavigationHeader, {
+  NavigationRefType,
+} from "../NavigationHeader/NavigationHeader";
 import "./Grid.css";
 
-type GridTypes = {
+type GridPropsType = {
   model: Model;
 };
 
-const Grid = (props: GridTypes) => {
-  const updateCalenderRef = createRef<RefType>();
+const Grid = (props: GridPropsType) => {
+  const updateCalenderRef = createRef<CalenderRefType>();
   const updateDetailsRef = createRef<DetialListRef>();
+  const updateNavigationRef = createRef<NavigationRefType>();
 
   const updateCalenderPropHandler = () => {
     if (updateCalenderRef !== null && updateCalenderRef.current !== null) {
@@ -27,6 +30,12 @@ const Grid = (props: GridTypes) => {
     }
   };
 
+  const updateNavigationHandler = (left: Boolean) => {
+    if (updateNavigationRef !== null && updateNavigationRef.current !== null) {
+      updateNavigationRef.current.update(left);
+    }
+  };
+
   return (
     <div className="grid">
       <div className="header">
@@ -35,6 +44,7 @@ const Grid = (props: GridTypes) => {
         <NavigationHeader
           model={props.model}
           updateCalenderProp={updateCalenderPropHandler}
+          ref={updateNavigationRef}
         />
       </div>
       <div className="content">
@@ -42,6 +52,7 @@ const Grid = (props: GridTypes) => {
           model={props.model}
           ref={updateCalenderRef}
           getMeetingValues={updateDetailsListPropHandler}
+          updateNavigation={updateNavigationHandler}
         />
       </div>
       <div className="footer">

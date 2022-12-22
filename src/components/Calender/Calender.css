@@ -50,6 +50,10 @@
     color: lightgreen;
 }
 
+.actual{
+    background-color: red;
+}
+
 .selected{
     background-color: grey;
     /* border: 1px solid red; */
