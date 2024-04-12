@@ -40,22 +40,40 @@
 .pre, .post{
     /* background-color: gray; */
     color: grey;
+    background-color: rgb(31, 31, 31);
+    border:0;
 }
 
 
 
 .contains{
-    background-color: green;
-    border: 1px solid green;
+    background-color: rgb(2, 92, 2);
+    border: 1px solid rgb(2, 92, 2);
     color: lightgreen;
+    border:0;
 }
+
+.prepostcontain{
+    /* background-color: gray; */
+    background-color: rgb(63, 77, 63);
+    border: 1px solid rgb(63, 77, 63);
+    color: lightgreen;
+    border:0;
+}
+
+
+
+
+
 
 .actual{
     background-color: red;
+    border:0;
 }
 
 .selected{
     background-color: grey;
     /* border: 1px solid red; */
-    outline: 1px solid lightgray;
+    /* outline: 1px solid lightgray; */
+    border:0;
 }

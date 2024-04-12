@@ -87,7 +87,7 @@ const Calender = forwardRef(
               {value.map((val, index) => {
                 // console.log(val);
                 const [value, date, caltype, meetings] = Object.values(val);
-
+                // console.log(index);
                 let contains = meetings.length > 0 ? "contains" : "";
                 let actdate = new Date(Date.now());
                 let comparedate = date.split("_");
@@ -97,7 +97,11 @@ const Calender = forwardRef(
                   "" + actdate.getDate() === comparedate[2]
                     ? "actual"
                     : "";
-
+                contains =
+                  contains == "contains" &&
+                  (caltype == "pre" || caltype == "post")
+                    ? "prepostcontain"
+                    : contains;
                 return (
                   <div
                     key={"row_" + index}

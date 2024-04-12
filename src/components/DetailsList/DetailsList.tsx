@@ -23,12 +23,14 @@ const DetailsList = forwardRef(
 
     return (
       <div className="details_list">
-        {list.map((item) => {
+        {list.map((item, index) => {
+          // console.log(item);
           const compdate: Date = new Date(item.date);
           const date = new Date(Date.now());
           const diff = date.getFullYear() - compdate.getFullYear();
+          // console.log(index);
           return (
-            <div key={"" + item.date}>
+            <div key={"detail_" + index}>
               {"" +
                 item.firstname +
                 " " +

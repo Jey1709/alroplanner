@@ -1,5 +1,6 @@
 import * as bdaylist from "../../data/birthdaylist.json";
 import Meeting from "./Meeting";
+
 class Model {
   private _actulDate: Date;
   private _selectedDate: Date;
@@ -34,6 +35,11 @@ class Model {
     return meetingList;
   }
 
+  /**
+   *
+   * @param rows => number of rows that should be displayed in the calender GUI. Default is 5.
+   * @returns
+   */
   public getActualMonthList(rows: number): number[][] {
     let calenderdays = this._DAYSOFWEEK * rows;
     const maxdays = this.getMaxDaysOfMonth(this._selectedDate.getMonth());
